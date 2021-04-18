@@ -10,7 +10,9 @@ echo "INFO : get virtual machines"
 $basedir/bin/get_vm.sh
 echo "INFO : get app service plans"
 $basedir/bin/get_appsvcplan.sh
-echo "INFO : get webapp"
+echo "INFO : get webapps"
 $basedir/bin/get_webapp.sh
+echo "INFO : get storage accounts"
+$basedir/bin/get_stgaccount.sh
 
 echo "END"
