@@ -92,12 +92,12 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
       // get landscape from tag
       $landscape="";
-      if (isset($vm_json_obj[$v]->{"tags"}->{$tag_landscape} )){
-        $landscape=$vm_json_obj[$v]->{"tags"}->{$tag_landscape};
+      if (isset($wa_json_obj[$v]->{"tags"}->{$tag_landscape} )){
+        $landscape=$wa_json_obj[$v]->{"tags"}->{$tag_landscape};
       }
 
       // split businessApp, add lines in relation file
-      if (isset($vm_json_obj[$v]->{"tags"}->{$tag_appid})){
+      if (isset($wa_json_obj[$v]->{"tags"}->{$tag_appid})){
         $appids=explode($tag_appid_separator,$wa_json_obj[$v]->{"tags"}->{$tag_appid});
 	for ($t=0;$t<count($appids); $t++){
 	  if (strlen($appids[$t])>0){
