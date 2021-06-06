@@ -25,4 +25,4 @@ Example 2 : tag an object to application id 9991,9992,9993 for quality environme
 AppID = "|9991|9992|9993|"
 Landscape = "Quality"
 
-The scripts automatically create a CVS with the "business applications" relations of each object with the tags defined.
+The scripts automatically create a CSV with the "business applications" relations of each object with the tags defined.
