@@ -1,4 +1,5 @@
-<?php
+<?
+// YOU HAVE TO  modify this path to adapt to your desired output folder.
 $output_path="/home/demouser/cmdbcloudconnector/az_connector/output";
 
 // output file anag
