@@ -10,6 +10,7 @@ You can then use those CSV extracted files to populate your CMDB, if you have al
 * Azure app service plan
 * Azure webapp
 * Azure storage account
+* Azure mysql
 
 # business applications
 Every CMDB should map not only the infrastructure items, but also relations with the "application", to let you have an immediate view of the elements related to each application (every VM, webapp, db, and so on) from a Business Application point of view.
