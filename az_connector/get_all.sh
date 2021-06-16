@@ -14,5 +14,9 @@ echo "INFO : get webapps"
 $basedir/bin/get_webapp.sh
 echo "INFO : get storage accounts"
 $basedir/bin/get_stgaccount.sh
+echo "INFO : get mysql servers and databases"
+$basedir/bin/get_mysql.sh        
+echo "INFO : get vnet"
+$basedir/bin/get_vnet.sh
 
 echo "END"

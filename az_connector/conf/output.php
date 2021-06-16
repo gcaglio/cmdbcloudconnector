@@ -11,6 +11,7 @@ $out_stgaccount_filename="stgaccount.csv";
 $out_appsvcplan_filename="appsvc-plan.csv";
 $out_mysqlsrv_filename="mysql-srv.csv";
 $out_mysqldb_filename="mysql-db.csv";
+$out_vnet_filename="vnets.csv";
 
 
 // output file relations
@@ -28,4 +29,7 @@ $out_rel_busapplandscape_appsvcplan="rel_bal-appsvcplan.csv";
 $out_rel_busapplandscape_webapp="rel_bal-webapp.csv";
 $out_rel_busapplandscape_stgaccount="rel_bal-stgaccount.csv";
 $out_rel_busapplandscape_mysqldb="rel_bal-mysqldb.csv";
+$out_rel_mysqlsrv_mysqldb="rel_mysqlsrv-mysqldb.csv";
+
+$out_rel_busapplandscape_vnet="rel_bal-vnet.csv";
 ?>
