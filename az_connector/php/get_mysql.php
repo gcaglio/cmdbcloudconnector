@@ -28,12 +28,20 @@ fwrite($f_rel_bal_mysqlsrv_output,"code_baLandscape;hash_MysqlSrvId\r\n");
 // output file for mysql db
 $out_mysqldb_filepath=$output_path."/".$out_mysqldb_filename;
 $f_mysqldb_output = fopen($out_mysqldb_filepath, "w") or die("Unable to open file : ".$out_mysqldb_filepath);
-fwrite($f_mysqldb_output,"Code;Description;Id;Name;Location;PrimaryLocation;SecondaryLocation;CustomDomain;Sku;ResourceGroup\r\n");
+fwrite($f_mysqldb_output,"Code;Description;Id;Name;Charset;Collation\r\n");
 
 //output file for BusinessAppLandscape-db
 $out_rel_bal_mysqldb_filepath=$output_path."/".$out_rel_busapplandscape_mysqldb;
 $f_rel_bal_mysqldb_output = fopen($out_rel_bal_mysqldb_filepath, "w") or die("Unable to open file : ".$out_rel_bal_mysqldb_filepath);
 fwrite($f_rel_bal_mysqldb_output,"code_baLandscape;hash_MysqlDbId\r\n");
+
+
+//output file for mysql server - mysql db
+$out_rel_mysqlsrv_mysqldb_filepath=$output_path."/".$out_rel_mysqlsrv_mysqldb;
+$f_rel_mysqlsrv_mysqldb_output = fopen($out_rel_mysqlsrv_mysqldb_filepath, "w") or die("Unable to open file : ".$out_rel_mysqlsrv_mysqldb_filepath);
+fwrite($f_rel_mysqlsrv_mysqldb_output,"hash_MysqlSrvId;hash_MysqlDbId\r\n");
+
+
 
 // cycle on all subscriptions
 for ($s=0; $s<count($subs_json_obj); $s++){
@@ -110,6 +118,55 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       }
 
 
+      // get all DBs of this server
+      $mdbdb_output=null;
+      $mdbdb_retval=null;
+      $mdbdb_command="az mysql db list --subscription ".$subs_id." --resource-group \"".$msrv_resgroup."\" --server-name \"".$msrv_name."\"";
+      exec($mdbdb_command, $mdbdb_output, $mdbdb_retval);
+      $mdbdb_json_obj=json_decode(join($mdbdb_output),false);
+      //cycle on all server
+      echo "INFO : found ".count($mdbdb_json_obj)." mysqldb databases on server ".$msrv_name."\r\n";
+
+      for ($x=0; $x<count($mdbdb_json_obj); $x++){
+        $mdb_id=$mdbdb_json_obj[$x]->{"id"};
+        $hash_mdbid=md5(strtolower($mdb_id));                 // this will be the CODE 32-byte length
+
+        $mdb_name=$mdbdb_json_obj[$x]->{"name"};
+        $mdb_charset=$mdbdb_json_obj[$x]->{"charset"};
+	$mdb_collation=$mdbdb_json_obj[$x]->{"collation"};
+
+	$line_db=$hash_mdbid.";".$mdb_name.";".$mdb_id.";".$mdb_name.";".$mdb_charset.";".$mdb_collation."\r\n";
+	fwrite($f_mysqldb_output, $line_db);
+
+
+        // get landscape from tag
+        $landscape_db="";
+        if (isset($mdbdb_json_obj[$x]->{"tags"}->{$tag_landscape} )){
+          $landscape=$mdbdb_json_obj[$x]->{"tags"}->{$tag_landscape};
+        }
+
+        // split businessApp, add lines in relation file
+        if (isset($mdbdb_json_obj[$v]->{"tags"}->{$tag_appid})){
+          $appids=explode($tag_appid_separator,$mdbdb_json_obj[$v]->{"tags"}->{$tag_appid});
+          for ($t=0;$t<count($appids); $t++){
+            if (strlen($appids[$t])>0){
+              if (strlen($landscape)>0)
+                $landscape="_".$landscape;
+
+              $rel_line_db=$appids[$t].$landscape.";".$hash_mdbid."\r\n";
+              fwrite($f_rel_bal_mysqldb_output,$rel_line_db);
+            }
+          }
+        }
+
+        $line_srv_id=$hash_msrvid.";".$hash_mdbid."\r\n";
+	fwrite($f_rel_mysqlsrv_mysqldb_output,$line_srv_id);
+
+
+      }
+
+
+
     }
 
   }
@@ -120,4 +177,6 @@ fclose($f_mysqlsrv_output);
 fclose($f_rel_bal_mysqlsrv_output);
 fclose($f_mysqldb_output);
 fclose($f_rel_bal_mysqldb_output);
+fclose($f_rel_mysqlsrv_mysqldb_output);
+
 ?>
