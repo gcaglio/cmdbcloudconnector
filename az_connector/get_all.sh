@@ -18,5 +18,6 @@ echo "INFO : get mysql servers and databases"
 $basedir/bin/get_mysql.sh        
 echo "INFO : get vnet"
 $basedir/bin/get_vnet.sh
-
+echo "INFO : get sql servers and databases"
+$basedir/bin/get_sqlserver.sh
 echo "END"
