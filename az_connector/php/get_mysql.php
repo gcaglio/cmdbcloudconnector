@@ -41,6 +41,10 @@ $out_rel_mysqlsrv_mysqldb_filepath=$output_path."/".$out_rel_mysqlsrv_mysqldb;
 $f_rel_mysqlsrv_mysqldb_output = fopen($out_rel_mysqlsrv_mysqldb_filepath, "w") or die("Unable to open file : ".$out_rel_mysqlsrv_mysqldb_filepath);
 fwrite($f_rel_mysqlsrv_mysqldb_output,"hash_MysqlSrvId;hash_MysqlDbId\r\n");
 
+// output file for rel subscription - mysql server
+$out_rel_subs_mysqlsrv_filepath=$output_path."/".$out_rel_subs_mysqlsrv;
+$f_rel_subs_mysqlsrv_output = fopen($out_rel_subs_mysqlsrv_filepath, "w") or die("Unable to open file : ".$out_rel_subs_mysqlsrv_filepath);
+fwrite($f_rel_subs_mysqlsrv_output,"hash_SubsId;hash_MysqlSrvId\r\n");
 
 
 // cycle on all subscriptions
@@ -118,6 +122,10 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       }
 
 
+      // write subs-server relations
+      $subs_srv_line=$hash_subsid.";".$hash_msrvid."\r\n";
+      fwrite($f_rel_subs_mysqlsrv_output,$subs_srv_line);
+
       // get all DBs of this server
       $mdbdb_output=null;
       $mdbdb_retval=null;
@@ -178,5 +186,5 @@ fclose($f_rel_bal_mysqlsrv_output);
 fclose($f_mysqldb_output);
 fclose($f_rel_bal_mysqldb_output);
 fclose($f_rel_mysqlsrv_mysqldb_output);
-
+fclose($f_rel_subs_mysqlsrv_output);
 ?>
