@@ -20,4 +20,7 @@ echo "INFO : get vnet"
 $basedir/bin/get_vnet.sh
 echo "INFO : get sql servers and databases"
 $basedir/bin/get_sqlserver.sh
+echo "INFO : get reservations"
+$basedir/bin/get_reservations.sh
+
 echo "END"

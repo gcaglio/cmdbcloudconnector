@@ -14,6 +14,7 @@ $out_sqlsrv_filename="sqlserver.csv";
 $out_mysqldb_filename="mysql-db.csv";
 $out_sqlsrvdb_filename="sqlserver-db.csv";
 $out_vnet_filename="vnets.csv";
+$out_reserv_filename="reservations.csv";
 
 
 // output file relations
