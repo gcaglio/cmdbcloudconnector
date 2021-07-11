@@ -82,7 +82,10 @@ for ($s=0; $s<count($subs_json_obj); $s++){
         $appids=explode($tag_appid_separator,$vm_json_obj[$v]->{"tags"}->{$tag_appid});
 	for ($t=0;$t<count($appids); $t++){
 	  if (strlen($appids[$t])>0){
-	    $rel_line=$appids[$t]."_".$landscape.";".$hash_vmid."\r\n";
+            if (strlen($landscape)>0)
+	      $landscape="_".$landscape;
+
+	    $rel_line=$appids[$t].$landscape.";".$hash_vmid."\r\n";
 	    fwrite($f_rel_bal_vm_output,$rel_line);
 	  }
 	}
