@@ -22,5 +22,7 @@ echo "INFO : get sql servers and databases"
 $basedir/bin/get_sqlserver.sh
 echo "INFO : get reservations"
 $basedir/bin/get_reservations.sh
+echo "INFO : get cosmosdb"
+$basedir/bin/get_cosmosdb.sh
 
 echo "END"

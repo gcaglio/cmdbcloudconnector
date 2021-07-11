@@ -14,6 +14,7 @@ $out_sqlsrv_filename="sqlserver.csv";
 $out_mysqldb_filename="mysql-db.csv";
 $out_sqlsrvdb_filename="sqlserver-db.csv";
 $out_vnet_filename="vnets.csv";
+$out_cosmos_filename="cosmosdb.csv";
 $out_reserv_filename="reservations.csv";
 
 
@@ -37,9 +38,11 @@ $out_rel_mysqlsrv_mysqldb="rel_mysqlsrv-mysqldb.csv";
 $out_rel_subs_mysqlsrv="rel_subs-mysqlsrv.csv";
 
 $out_rel_busapplandscape_vnet="rel_bal-vnet.csv";
+$out_rel_busapplandscape_cosmos="rel_bal-cosmosdb.csv";
 $out_rel_busapplandscape_sqlsrv="rel_bal-sqlsrv.csv";
 $out_rel_busapplandscape_sqldb="rel_bal-sqlsrvdb.csv";
 $out_rel_sqlsrv_sqldb="rel_sqlsrv_srvsqldb.csv";
 
 $out_rel_subs_sqlsrv="rel_subs-sqlsrv.csv";
+$out_rel_subs_cosmos="rel_subs-cosmos.csv";
 ?>
