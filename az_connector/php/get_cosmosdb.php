@@ -62,8 +62,8 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
       // get landscape from tag
       $landscape="";
-      if (isset($vnet_json_obj[$v]->{"tags"}->{$tag_landscape} )){
-        $landscape=$vnet_json_obj[$v]->{"tags"}->{$tag_landscape};
+      if (isset($cdb_json_obj[$v]->{"tags"}->{$tag_landscape} )){
+        $landscape=$cdb_json_obj[$v]->{"tags"}->{$tag_landscape};
       }
 
       // split businessApp, add lines in relation file
