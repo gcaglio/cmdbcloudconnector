@@ -15,6 +15,7 @@ You can then use those CSV extracted files to populate your CMDB, if you have al
 * Azure SQL Servers
 * Azure reservations (aka reserved instances)
 * Azure cosmosdb (minimal support - name, id, location, resourcegroup)
+* Azure iothub (minimal support - name, id, hostname, primary location, seconday location, sku, resourcegroup)
 
 # business applications
 Every CMDB should map not only the infrastructure items, but also relations with the "application", to let you have an immediate view of the elements related to each application (every VM, webapp, db, and so on) from a Business Application point of view.

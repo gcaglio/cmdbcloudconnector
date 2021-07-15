@@ -24,5 +24,7 @@ echo "INFO : get reservations"
 $basedir/bin/get_reservations.sh
 echo "INFO : get cosmosdb"
 $basedir/bin/get_cosmosdb.sh
+echo "INFO : get iothub"
+$basedir/bin/get_iothub.sh
 
 echo "END"
