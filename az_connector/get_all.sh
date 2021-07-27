@@ -26,5 +26,7 @@ echo "INFO : get cosmosdb"
 $basedir/bin/get_cosmosdb.sh
 echo "INFO : get iothub"
 $basedir/bin/get_iothub.sh
+echo "INFO : get svcbus"
+$basedir/bin/get_svcbus.sh
 
 echo "END"
