@@ -4,8 +4,8 @@ basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 cd $basedir
 echo "INFO : starting Google Cloud connectors $basedir"
-#echo "INFO : get subscriptions"
-#$basedir/bin/get_subscriptions.sh
+echo "INFO : get projects"
+$basedir/bin/get_projects.sh
 echo "INFO : get virtual machines (compute instances)"
 $basedir/bin/get_vm.sh
 #echo "INFO : get app service plans"

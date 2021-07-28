@@ -19,6 +19,7 @@ You can then use those CSV extracted files to populate your CMDB, if you have al
 * Azure service bus namespaces
 
 # Beta support
+* GCP Projects
 * GCP virtual machines (compute instances) - minimal support : barely the list
 
 

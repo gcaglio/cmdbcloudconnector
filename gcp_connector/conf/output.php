@@ -5,7 +5,7 @@ $output_path="/home/demouser/cmdbcloudconnector/gcp_connector/output";
 // output file anag
 $out_vm_filename="vm.csv";
 $out_disks_filename="disks.csv";
-$out_prjs_filename="subs.csv";
+$out_prjs_filename="projects.csv";
 
 
 // output file relations
