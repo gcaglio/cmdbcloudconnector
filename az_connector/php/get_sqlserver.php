@@ -128,7 +128,10 @@ for ($s=0; $s<count($subs_json_obj); $s++){
         $hash_sqldbid=md5(strtolower($sqldb_id));                 // this will be the CODE 32-byte length
 
         $sqldb_name=$sqldb_json_obj[$x]->{"name"};
-        $sqldb_bckstorageredundancy=$sqldb_json_obj[$x]->{"backupStorageRedundancy"};
+        $sqldb_bckstorageredundancy="";
+        if (isset($sqldb_json_obj[$x]->{"backupStorageRedundancy"})) {
+          $sqldb_bckstorageredundancy=$sqldb_json_obj[$x]->{"backupStorageRedundancy"};
+        }
         $sqldb_catalogCollation=$sqldb_json_obj[$x]->{"catalogCollation"};
         $sqldb_collation=$sqldb_json_obj[$x]->{"collation"};
 	$sqldb_createDate=$sqldb_json_obj[$x]->{"creationDate"};
@@ -138,7 +141,12 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 	$sqldb_edition=$sqldb_json_obj[$x]->{"edition"};
 	$sqldb_elasticPoolName=$sqldb_json_obj[$x]->{"elasticPoolName"};
 	$sqldb_failoverGroupId=$sqldb_json_obj[$x]->{"failoverGroupId"};
-	$sqldb_highAvailabilityReplicaCount=$sqldb_json_obj[$x]->{"highAvailabilityReplicaCount"};
+
+	$sqldb_highAvailabilityReplicaCount=0;
+        if (isset($sqldb_json_obj[$x]->{"highAvailabilityReplicaCount"}) ){
+          $sqldb_highAvailabilityReplicaCount=$sqldb_json_obj[$x]->{"highAvailabilityReplicaCount"};
+        }
+
 	$sqldb_kind=$sqldb_json_obj[$x]->{"kind"};
 	$sqldb_location=$sqldb_json_obj[$x]->{"location"};
 	$sqldb_maxLogSizeBytes=$sqldb_json_obj[$x]->{"maxLogSizeBytes"};
