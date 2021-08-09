@@ -17,7 +17,7 @@ $subs_json_obj=json_decode(join($subs_output),false);
 // output file for mysql servers
 $out_reserv_filepath=$output_path."/".$out_reserv_filename;
 $f_reserv_output = fopen($out_reserv_filepath, "w") or die("Unable to open file : ".$out_reserv_filepath);
-fwrite($f_reserv_output,"Code;Description;Id;AzName;Name;Location;Scope;Type;Quantity;SkuName;SkuDescription;Flexibility;Autorenew;BillingScope;Billing;Expiration;Archived;ExtendedStatusCode\r\n");
+fwrite($f_reserv_output,"Code;Description;Id;AzName;Name;Location;Scope;Type;Quantity;SkuName;SkuDescription;Flexibility;Autorenew;BillingScope;Billing;Expiration;Archived;ExtendedStatusCode;ProvisioningState\r\n");
 
 // cycle on all subscriptions
 for ($s=0; $s<count($subs_json_obj); $s++){
@@ -62,6 +62,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
         //var_dump($ri_json_obj[$r]);
 
 
+        $res_expiratiot=$ri_json_obj[$r]->{"properties"}->{"expiryDate"};
         $res_location=$ri_json_obj[$r]->{"location"};
         $res_name=$ri_json_obj[$r]->{"name"};
         $res_scope=$ri_json_obj[$r]->{"properties"}->{"billingScopeId"};
@@ -76,13 +77,14 @@ for ($s=0; $s<count($subs_json_obj); $s++){
         $res_billingscope=$ri_json_obj[$r]->{"properties"}->{"billingScopeId"};
         $res_billing=$ri_json_obj[$r]->{"properties"}->{"billingPlan"};
         $res_expiration=$ri_json_obj[$r]->{"properties"}->{"expiryDate"};
+        $res_provisioningstate=$ri_json_obj[$r]->{"properties"}->{"provisioningState"};
 
         $res_extendedStatus="";
         if (isset( $ri_json_obj[$r]->{"properties"}->{"extendedStatusInfo"} )) {
           $res_extendedStatus=$ri_json_obj[$r]->{"properties"}->{"extendedStatusInfo"}->{"statusCode"};
         }
 
-        $line=$hash_resid.";".$res_displayname.";".$res_id.";".$res_name.";".$res_displayname.";".$res_location.";".$res_scope.";".$res_type.";".$res_qty.";".$res_skuname.";".$res_skudescription.";".$res_flexi.";".$res_autorenew.";".$res_billingscope.";".$res_billing.";".$res_expiration.";".$res_archived.";".$res_extendedStatus.";\r\n";
+        $line=$hash_resid.";".$res_displayname.";".$res_id.";".$res_name.";".$res_displayname.";".$res_location.";".$res_scope.";".$res_type.";".$res_qty.";".$res_skuname.";".$res_skudescription.";".$res_flexi.";".$res_autorenew.";".$res_billingscope.";".$res_billing.";".$res_expiration.";".$res_archived.";".$res_extendedStatus.";".$res_provisioningstate.";\r\n";
 
         fwrite($f_reserv_output,$line);
       }
