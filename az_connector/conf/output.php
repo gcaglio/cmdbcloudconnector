@@ -18,7 +18,7 @@ $out_cosmos_filename="cosmosdb.csv";
 $out_iothub_filename="iothub.csv";
 $out_svcbus_filename="servicebus.csv";
 $out_reserv_filename="reservations.csv";
-
+$out_privip_filename="privateips.csv";
 
 // output file relations
 $out_rel_disks_vm="rel_disks-vm.csv";
@@ -51,4 +51,5 @@ $out_rel_subs_sqlsrv="rel_subs-sqlsrv.csv";
 $out_rel_subs_cosmos="rel_subs-cosmosdb.csv";
 $out_rel_subs_iothub="rel_subs-iothub.csv";
 $out_rel_subs_svcbus="rel_subs-svcbus.csv";
+$out_rel_privip_vnet="rel_privip-vnet.csv";
 ?>
