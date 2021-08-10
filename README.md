@@ -11,7 +11,7 @@ You can then use those CSV extracted files to populate your CMDB, if you have al
 * Azure webapp
 * Azure storage account
 * Azure mysql servers and databases
-* Azure vnet (not subnet - YET)
+* Azure vnet (with private ips and private endpoints)
 * Azure SQL Servers
 * Azure reservations (aka reserved instances)
 * Azure cosmosdb (minimal support - name, id, location, resourcegroup)

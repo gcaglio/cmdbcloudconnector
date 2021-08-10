@@ -24,6 +24,16 @@ $f_rel_bal_vnet_output = fopen($out_rel_bal_vnet_filepath, "w") or die("Unable t
 fwrite($f_rel_bal_vnet_output,"code_baLandscape;hash_VnetId\r\n");
 
 
+//output file for private ips
+$out_privip_filepath=$output_path."/".$out_privip_filename;
+$f_privip_output = fopen($out_privip_filepath, "w") or die("Unable to open file : ".$out_privip_filepath);
+fwrite($f_privip_output,"Code;Description;Id;Name;PrivateIp;SubnetName;VnetName;ResourceGroup\r\n");
+
+$out_rel_privip_vnet_filepath=$output_path."/".$out_rel_privip_vnet;
+$f_rel_privip_vnet_output = fopen($out_rel_privip_vnet_filepath, "w") or die("Unable to open file : ".$out_rel_privip_vnet_filepath);
+fwrite($f_rel_privip_vnet_output,"code_Privip;code_Vnet\r\n");
+
+
 // cycle on all subscriptions
 for ($s=0; $s<count($subs_json_obj); $s++){
   if ( $subs_json_obj[$s]->{"state"} === "Enabled" ){ 
@@ -87,6 +97,43 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 	  }
 	}
       }
+
+      // get connected ip addresses
+      $vnetdtl_output=null;
+      $vnetdtl_retval=null;
+      $vnetdtl_command="az network vnet show --resource-group \"".$vnet_resgroup."\" --ids \"".$vnet_id."\" --expand \"subnets/ipConfigurations\" 2>/dev/null";
+
+      exec($vnetdtl_command, $vnetdtl_output, $vnetdtl_retval);
+
+      $vnetdtl_json_obj=json_decode(join($vnetdtl_output),false);
+      //var_dump($vnetdtl_json_obj);
+      for ($sn=0; $sn<count($vnetdtl_json_obj->{"subnets"}); $sn++){
+        #var_dump($vnetdtl_json_obj->{"subnets"});
+        $subnet_obj=$vnetdtl_json_obj->{"subnets"}[$sn];
+        $subnet_id=$vnetdtl_json_obj->{"subnets"}[$sn]->{"id"};
+        $subnet_name=$vnetdtl_json_obj->{"subnets"}[$sn]->{"name"};
+        $hash_subnetid=md5(strtolower($vnetdtl_json_obj->{"subnets"}[$sn]->{"id"}));
+
+        // scan all ip configurations to get PrivateIPs AND private endpoint
+        for ($ic=0; $ic<count($subnet_obj->{"ipConfigurations"}); $ic++){
+          $ipc_id=$subnet_obj->{"ipConfigurations"}[$ic]->{"id"};
+          $hash_ipcid=md5(strtolower($ipc_id));
+          $ipc_name=$subnet_obj->{"ipConfigurations"}[$ic]->{"name"};
+	  $ipc_privIps=$subnet_obj->{"ipConfigurations"}[$ic]->{"privateIpAddress"};
+
+          $ipc_resgroup=$subnet_obj->{"ipConfigurations"}[$ic]->{"resourceGroup"};
+     
+          $line_ips=$hash_ipcid.";".$ipc_name.";".$ipc_id.";".$ipc_name.";".$ipc_privIps.";".$subnet_name.";".$vnet_name.";".$ipc_resgroup.";\r\n";
+          fwrite($f_privip_output,$line_ips);
+
+          $rel_line_ips_vnet=$hash_ipcid.";".$hash_vnetid.";\r\n";
+	  fwrite($f_rel_privip_vnet_output,$rel_line_ips_vnet);
+         
+        }
+
+
+      }  
+
 
 
     }
