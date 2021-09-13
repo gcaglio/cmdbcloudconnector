@@ -51,10 +51,15 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       //echo $ri_command;
       exec($ri_command, $ri_output, $ri_retval);
       $ri_json_obj=json_decode(join($ri_output),false);
-      //cycle on all reservation
-      echo "INFO : found ".count($ri_json_obj)." reservation\r\n";
 
-      for ($r=0;  $r<count($ri_json_obj);  $r++){
+      //cycle on all reservation
+      $count_ri=0;
+      if ( isset($ri_json_obj) && count($ri_json_obj)){
+        $count_ri=count($ri_json_obj);
+      }
+      echo "INFO : found ".$count_ri." reservation\r\n";
+
+      for ($r=0;  isset($ri_json_obj) && $r<count($ri_json_obj);  $r++){
         $res_id=$ri_json_obj[$r]->{"id"};
         $hash_resid=md5(strtolower($res_id));
 
