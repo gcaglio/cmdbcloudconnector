@@ -1,6 +1,7 @@
 <?php
 include "./conf/output.php";
 include "./conf/tags.php";
+include "./utils/utils.php";
 
 // get all subscriptions
 // for each enabled subscriptions get vm(s)
@@ -11,13 +12,14 @@ $subs_retval=null;
 $subs_command="az account list --all --refresh 2>/dev/null";
 
 exec($subs_command, $subs_output, $subs_retval);
+printCommandOutputDebug($subs_command,$subs_output);
 
 $subs_json_obj=json_decode(join($subs_output),false);
 
 // output file for VM
 $out_vm_filepath=$output_path."/".$out_vm_filename;
 $f_vm_output = fopen($out_vm_filepath, "w") or die("Unable to open file : ".$out_vm_filepath);
-fwrite($f_vm_output,"Code;Description;Id;Name;Location;StandardFamily;AvailabilitySet;DiagnosticsProfile;ResourceGroup\r\n");
+fwrite($f_vm_output,"Code;Description;Id;Name;Location;StandardFamily;AvailabilitySet;DiagnosticsProfile;ResourceGroup;Type;Zones\r\n");
 
 //output file for SUBS-VM
 $out_rel_subs_vm_filepath=$output_path."/".$out_rel_subs_vm;
@@ -43,7 +45,9 @@ for ($s=0; $s<count($subs_json_obj); $s++){
     $vm_retval=null;
 
     $vm_command="az vm list --show-details --subscription ".$subs_id;  
+
     exec($vm_command, $vm_output, $vm_retval);
+    printCommandOutputDebug($vm_command,$vm_output);
     $vm_json_obj=json_decode(join($vm_output),false);
     //cycle on all VMs
     echo "INFO : found ".count($vm_json_obj)." VMs\r\n";
@@ -61,10 +65,18 @@ for ($s=0; $s<count($subs_json_obj); $s++){
         $vm_avset=substr($vm_avset,strpos($vm_avset,"/availabilitySet")+17);
       }
       $vm_resgroup=$vm_json_obj[$v]->{"resourceGroup"};
+      $vm_type=$vm_json_obj[$v]->{"type"};
+      $vm_zones="";
+      if ( isset($vm_json_obj[$v]->{"zones"}) ){
+        for ($z=0; $z<count($vm_json_obj[$v]->{"zones"}); $z++){
+          //echo $vm_json_obj[$v]->{"zones"}[$z];
+          $vm_zones=$vm_json_obj[$v]->{"zones"}[$z]." ";  
+	      }
+      }
 
 
       // write line in VMs file
-      $line=$hash_vmid.";".$vm_name.";".$vm_id.";".$vm_name.";".$vm_location.";".$vm_stdfamily.";".$vm_avset.";;".$vm_resgroup."\r\n";
+      $line=$hash_vmid.";".$vm_name.";".$vm_id.";".$vm_name.";".$vm_location.";".$vm_stdfamily.";".$vm_avset.";;".$vm_resgroup.";".$vm_type.";".$vm_zones."\r\n";
       fwrite($f_vm_output, $line);
 
       // write line in rel-subs-vm file
@@ -80,15 +92,16 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       // split businessApp, add lines in relation file
       if (isset($vm_json_obj[$v]->{"tags"}->{$tag_appid})){
         $appids=explode($tag_appid_separator,$vm_json_obj[$v]->{"tags"}->{$tag_appid});
-	for ($t=0;$t<count($appids); $t++){
-	  if (strlen($appids[$t])>0){
+       	for ($t=0;$t<count($appids); $t++){
+          if (strlen($appids[$t])>0){
+	          $temp_landscape=$landscape;		  
             if (strlen($landscape)>0)
-	      $landscape="_".$landscape;
+	            $temp_landscape="_".$landscape;
 
-	    $rel_line=$appids[$t].$landscape.";".$hash_vmid."\r\n";
-	    fwrite($f_rel_bal_vm_output,$rel_line);
-	  }
-	}
+	          $rel_line=$appids[$t].$temp_landscape.";".$hash_vmid."\r\n";
+	          fwrite($f_rel_bal_vm_output,$rel_line);
+	        }
+	      }
       }
 
 

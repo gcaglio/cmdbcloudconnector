@@ -1,6 +1,9 @@
 <?php
 // YOU HAVE TO  modify this path to adapt to your desired output folder.
-$output_path="/home/demouser/cmdbcloudconnector/az_connector/output";
+$output_path="/opt/cmdbcloudconnector/az_connector/output";
+
+// true if you want every command and output to be printed for debug
+$debug_cmd_output=true;
 
 // output file anag
 $out_vm_filename="vm.csv";
