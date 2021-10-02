@@ -1,6 +1,7 @@
 <?php
 include "./conf/output.php";
 include "./conf/tags.php";
+include "./utils/utils.php";
 
 // get all subscriptions
 // for each enabled subscriptions get cosmosdb
@@ -10,6 +11,7 @@ $subs_retval=null;
 $subs_command="az account list --all --refresh 2>/dev/null";
 
 exec($subs_command, $subs_output, $subs_retval);
+printCommandOutputDebug($subs_command,$subs_output);
 
 $subs_json_obj=json_decode(join($subs_output),false);
 
@@ -41,6 +43,8 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
     $cdb_command="az cosmosdb list --subscription ".$subs_id;  
     exec($cdb_command, $cdb_output, $cdb_retval);
+    printCommandOutputDebug($cdb_command,$cdb_output);
+
     $cdb_json_obj=json_decode(join($cdb_output),false);
     //cycle on all cosmosdb
     echo "INFO : found ".count($cdb_json_obj)." cosmosdb\r\n";

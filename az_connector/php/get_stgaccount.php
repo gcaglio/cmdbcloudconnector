@@ -1,6 +1,7 @@
 <?php
 include "./conf/output.php";
 include "./conf/tags.php";
+include "./utils/utils.php";
 
 // get all subscriptions
 // for each enabled subscriptions get storage account(s)
@@ -10,6 +11,7 @@ $subs_retval=null;
 $subs_command="az account list --all --refresh 2>/dev/null";
 
 exec($subs_command, $subs_output, $subs_retval);
+printCommandOutputDebug($subs_command,$subs_output);
 
 $subs_json_obj=json_decode(join($subs_output),false);
 
@@ -37,6 +39,8 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
     $sa_command="az storage account list --subscription ".$subs_id;  
     exec($sa_command, $sa_output, $sa_retval);
+    printCommandOutputDebug($sa_command,$sa_output);
+
     $sa_json_obj=json_decode(join($sa_output),false);
     //cycle on all storage account
     echo "INFO : found ".count($sa_json_obj)." Storage accounts\r\n";

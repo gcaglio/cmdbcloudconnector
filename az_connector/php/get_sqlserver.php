@@ -1,6 +1,7 @@
 <?php
 include "./conf/output.php";
 include "./conf/tags.php";
+include "./utils/utils.php";
 
 // get all subscriptions
 // for each enabled subscriptions get sqlserver server
@@ -11,6 +12,7 @@ $subs_retval=null;
 $subs_command="az account list --all --refresh 2>/dev/null";
 
 exec($subs_command, $subs_output, $subs_retval);
+printCommandOutputDebug($subs_command,$subs_output);
 
 $subs_json_obj=json_decode(join($subs_output),false);
 
@@ -28,7 +30,7 @@ fwrite($f_rel_bal_sqlsrv_output,"code_baLandscape;hash_SqlSrvId\r\n");
 // output file for sql db
 $out_sqldb_filepath=$output_path."/".$out_sqlsrvdb_filename;
 $f_sqldb_output = fopen($out_sqldb_filepath, "w") or die("Unable to open file : ".$out_sqldb_filepath);
-fwrite($f_sqldb_output,"Code;Description;Id;Name;Location;Collation;CatalogCollation;CreationDate;SkuName;SkuTier;BckStorageRedundancy;DefaultSecondaryLocation;Edition;ElasticPoolName;FailoverGroupID;HighAvailabilityReplicaCount;Kind;MaxLogSizeBytes;MaxSizeBytes;MinCapacity;ZoneRedundancy;ResourceGroup\r\n");
+fwrite($f_sqldb_output,"Code;Description;Id;Name;Location;Collation;CatalogCollation;CreationDate;SkuName;SkuTier;BckStorageRedundancy;DefaultSecondaryLocation;Edition;ElasticPoolName;FailoverGroupID;HighAvailabilityReplicaCount;Kind;MaxLogSizeBytes;MaxSizeBytes;MinCapacity;ZoneRedundancy;ResourceGroup;Type\r\n");
 
 //output file for BusinessAppLandscape-db
 $out_rel_bal_sqldb_filepath=$output_path."/".$out_rel_busapplandscape_sqldb;
@@ -61,6 +63,8 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
     $sqlsrv_command="az sql server list --subscription ".$subs_id;  
     exec($sqlsrv_command, $sqlsrv_output, $sqlsrv_retval);
+    printCommandOutputDebug($sqlsrv_command,$sqlsrv_output);
+
     $sqlsrv_json_obj=json_decode(join($sqlsrv_output),false);
     //cycle on all server
     echo "INFO : found ".count($sqlsrv_json_obj)." sqlserver\r\n";
@@ -119,6 +123,8 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       $sqldb_command="az sql db list --subscription ".$subs_id." --resource-group \"".$sqlsrv_resgroup."\" --server \"".$sqlsrv_name."\"";
       //echo $sqldb_command;
       exec($sqldb_command, $sqldb_output, $sqldb_retval);
+      printCommandOutputDebug($sqldb_command,$sqldb_output);
+
       $sqldb_json_obj=json_decode(join($sqldb_output),false);
       //cycle on all server
       echo "INFO : found ".count($sqldb_json_obj)." sql server db databases on server ".$sqlsrv_name."\r\n";
@@ -154,6 +160,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 	$sqldb_minCapacity=$sqldb_json_obj[$x]->{"minCapacity"};
 	$sqldb_zoneRedundant=$sqldb_json_obj[$x]->{"zoneRedundant"};
 	$sqldb_resourceGroup=$sqldb_json_obj[$x]->{"resourceGroup"};
+	$sqldb_type=$sqldb_json_obj[$x]->{"type"};
 
 
         //$mdb_charset=$mdbdb_json_obj[$x]->{"charset"};
@@ -162,7 +169,8 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
 //	var_dump($sqldb_json_obj[$x]);
 
-	$line_db=$hash_sqldbid.";".$sqldb_name.";".$sqldb_id.";".$sqldb_name.";".$sqldb_location.";".$sqldb_collation.";".$sqldb_catalogCollation.";".$sqldb_createDate.";".$sqldb_skuname.";".$sqldb_skutier.";".$sqldb_bckstorageredundancy.";".$sqldb_defaultSecondaryLocation.";".$sqldb_edition.";".$sqldb_elasticPoolName.";".$sqldb_failoverGroupId.";".$sqldb_highAvailabilityReplicaCount.";".$sqldb_kind.";".$sqldb_maxLogSizeBytes.";".$sqldb_maxSizeBytes.";".$sqldb_minCapacity.";".$sqldb_zoneRedundant.";".$sqldb_resourceGroup."\r\n";
+	$line_db=$hash_sqldbid.";".$sqldb_name.";".$sqldb_id.";".$sqldb_name.";".$sqldb_location.";".$sqldb_collation.";".$sqldb_catalogCollation.";".$sqldb_createDate.";".$sqldb_skuname.";".$sqldb_skutier.";".$sqldb_bckstorageredundancy.";".$sqldb_defaultSecondaryLocation.";".$sqldb_edition.";".$sqldb_elasticPoolName.";".$sqldb_failoverGroupId.";".$sqldb_highAvailabilityReplicaCount.";".$sqldb_kind.";".$sqldb_maxLogSizeBytes.";".$sqldb_maxSizeBytes.";".$sqldb_minCapacity.";".$sqldb_zoneRedundant.";".$sqldb_resourceGroup.";".$sqldb_type."\r\n";
+	//echo $line_db;
 	fwrite($f_sqldb_output, $line_db);
 
 
@@ -172,15 +180,18 @@ for ($s=0; $s<count($subs_json_obj); $s++){
           $landscape=$sqldb_json_obj[$x]->{"tags"}->{$tag_landscape};
         }
 
+	#var_dump( $sqldb_json_obj[$v]->{"tags"}->{$tag_appid} );
         // split businessApp, add lines in relation file
-        if (isset($sqldb_json_obj[$v]->{"tags"}->{$tag_appid})){
-          $appids=explode($tag_appid_separator,$sqldb_json_obj[$v]->{"tags"}->{$tag_appid});
+	if (isset($sqldb_json_obj[$x]->{"tags"}->{$tag_appid})){
+	  $appids=explode($tag_appid_separator,$sqldb_json_obj[$x]->{"tags"}->{$tag_appid});
           for ($t=0;$t<count($appids); $t++){
             if (strlen($appids[$t])>0){
+              $temp_landscape="";
               if (strlen($landscape)>0)
-                $landscape="_".$landscape;
+                $temp_landscape="_".$landscape;
 
-              $rel_line_db=$appids[$t].$landscape.";".$hash_sqldbid."\r\n";
+	      $rel_line_db=$appids[$t].$temp_landscape.";".$hash_sqldbid."\r\n";
+
               fwrite($f_rel_bal_sqldb_output,$rel_line_db);
             }
           }

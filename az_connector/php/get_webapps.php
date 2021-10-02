@@ -1,6 +1,7 @@
 <?php
 include "./conf/output.php";
 include "./conf/tags.php";
+include "./utils/utils.php";
 
 // get all subscriptions
 // for each enabled subscriptions get webapp(s)
@@ -10,6 +11,8 @@ $subs_retval=null;
 $subs_command="az account list --all --refresh 2>/dev/null";
 
 exec($subs_command, $subs_output, $subs_retval);
+printCommandOutputDebug($subs_command,$subs_output);
+
 
 $subs_json_obj=json_decode(join($subs_output),false);
 
@@ -42,7 +45,10 @@ for ($s=0; $s<count($subs_json_obj); $s++){
     $wa_retval=null;
 
     $wa_command="az webapp list --subscription ".$subs_id;  
+
     exec($wa_command, $wa_output, $wa_retval);
+    printCommandOutputDebug($wa_command,$wa_output);
+
     $wa_json_obj=json_decode(join($wa_output),false);
     //cycle on all webapps
     echo "INFO : found ".count($wa_json_obj)." WebApps\r\n";

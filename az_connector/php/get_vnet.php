@@ -1,6 +1,7 @@
 <?php
 include "./conf/output.php";
 include "./conf/tags.php";
+include "./utils/utils.php";
 
 // get all subscriptions
 // for each enabled subscriptions get vnet(s)
@@ -9,7 +10,10 @@ $subs_output=null;
 $subs_retval=null;
 $subs_command="az account list --all --refresh 2>/dev/null";
 
+
 exec($subs_command, $subs_output, $subs_retval);
+printCommandOutputDebug($subs_command,$subs_output);
+
 
 $subs_json_obj=json_decode(join($subs_output),false);
 
@@ -46,7 +50,10 @@ for ($s=0; $s<count($subs_json_obj); $s++){
     $vnet_retval=null;
 
     $vnet_command="az network vnet list --subscription ".$subs_id;  
+
     exec($vnet_command, $vnet_output, $vnet_retval);
+    printCommandOutputDebug($vnet_command,$vnet_output);
+
     $vnet_json_obj=json_decode(join($vnet_output),false);
     //cycle on all vnet
     echo "INFO : found ".count($vnet_json_obj)." vnet\r\n";
@@ -102,6 +109,8 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       $vnetdtl_output=null;
       $vnetdtl_retval=null;
       $vnetdtl_command="az network vnet show --resource-group \"".$vnet_resgroup."\" --ids \"".$vnet_id."\" --expand \"subnets/ipConfigurations\" 2>/dev/null";
+      printCommandOutputDebug($vnetdtl_command,$vnetdtl_output);
+
 
       exec($vnetdtl_command, $vnetdtl_output, $vnetdtl_retval);
 

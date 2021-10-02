@@ -1,12 +1,17 @@
 <?php
 include "./conf/output.php";
+include "./conf/tags.php";
+include "./utils/utils.php";
 
 // outputs the username that owns the running php/httpd process
 // // (on a system with the "whoami" executable in the path)
 $output=null;
 $retval=null;
 $command="az account list --all --refresh 2>/dev/null";
+
 exec($command, $output, $retval);
+printCommandOutputDebug($retval,$output);
+
 #echo "Returned with status $retval and output:\n";
 #print_r(join($output));
 

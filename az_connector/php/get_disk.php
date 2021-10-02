@@ -1,5 +1,7 @@
 <?php
 include "./conf/output.php";
+include "./conf/tags.php";
+include "./utils/utils.php";
 
 // get all subscriptions
 // for each enabled subscriptions get disk(s)
@@ -9,6 +11,7 @@ $subs_retval=null;
 $subs_command="az account list --all --refresh 2>/dev/null";
 
 exec($subs_command, $subs_output, $subs_retval);
+printCommandOutputDebug($subs_command,$subs_output);
 
 $subs_json_obj=json_decode(join($subs_output),false);
 
@@ -40,6 +43,8 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
     $disk_command="az disk list --subscription ".$subs_id;  
     exec($disk_command, $disk_output, $disk_retval);
+    printCommandOutputDebug($disk_command,$disk_output);
+
     $disk_json_obj=json_decode(join($disk_output),false);
     //cycle on all VMs
     echo "INFO : found ".count($disk_json_obj)." Disks\r\n";

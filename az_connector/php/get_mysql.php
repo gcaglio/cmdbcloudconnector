@@ -1,6 +1,7 @@
 <?php
 include "./conf/output.php";
 include "./conf/tags.php";
+include "./utils/utils.php";
 
 // get all subscriptions
 // for each enabled subscriptions get maridb server
@@ -11,6 +12,7 @@ $subs_retval=null;
 $subs_command="az account list --all --refresh 2>/dev/null";
 
 exec($subs_command, $subs_output, $subs_retval);
+printCommandOutputDebug($subs_command,$subs_output);
 
 $subs_json_obj=json_decode(join($subs_output),false);
 
@@ -61,6 +63,8 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
     $mdbsrv_command="az mysql server list --subscription ".$subs_id;  
     exec($mdbsrv_command, $mdbsrv_output, $mdbsrv_retval);
+    printCommandOutputDebug($mdbsrv_command,$mdbsrv_output);
+
     $mdbsrv_json_obj=json_decode(join($mdbsrv_output),false);
     //cycle on all server
     echo "INFO : found ".count($mdbsrv_json_obj)." mysqldb server\r\n";
@@ -131,6 +135,8 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       $mdbdb_retval=null;
       $mdbdb_command="az mysql db list --subscription ".$subs_id." --resource-group \"".$msrv_resgroup."\" --server-name \"".$msrv_name."\"";
       exec($mdbdb_command, $mdbdb_output, $mdbdb_retval);
+      printCommandOutputDebug($mdbdb_command,$mdbdb_output);
+
       $mdbdb_json_obj=json_decode(join($mdbdb_output),false);
       //cycle on all server
       echo "INFO : found ".count($mdbdb_json_obj)." mysqldb databases on server ".$msrv_name."\r\n";

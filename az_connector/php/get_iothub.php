@@ -1,6 +1,7 @@
 <?php
 include "./conf/output.php";
 include "./conf/tags.php";
+include "./utils/utils.php";
 
 // get all subscriptions
 // for each enabled subscriptions get iothub
@@ -10,6 +11,7 @@ $subs_retval=null;
 $subs_command="az account list --all --refresh 2>/dev/null";
 
 exec($subs_command, $subs_output, $subs_retval);
+printCommandOutputDebug($subs_command,$subs_output);
 
 $subs_json_obj=json_decode(join($subs_output),false);
 
@@ -41,6 +43,8 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
     $ioth_command="az iot hub list --subscription ".$subs_id;  
     exec($ioth_command, $ioth_output, $ioth_retval);
+    printCommandOutputDebug($ioth_command,$ioth_output);
+
     $ioth_json_obj=json_decode(join($ioth_output),false);
     //cycle on all iothub
     echo "INFO : found ".count($ioth_json_obj)." iothub(s)\r\n";

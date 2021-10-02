@@ -1,6 +1,7 @@
 <?php
 include "./conf/output.php";
 include "./conf/tags.php";
+include "./utils/utils.php";
 
 // get all subscriptions
 // for each enabled subscriptions get service bus
@@ -10,6 +11,7 @@ $subs_retval=null;
 $subs_command="az account list --all --refresh 2>/dev/null";
 
 exec($subs_command, $subs_output, $subs_retval);
+printCommandOutputDebug($subs_command,$subs_output);
 
 $subs_json_obj=json_decode(join($subs_output),false);
 
@@ -41,6 +43,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
     $sbus_command="az servicebus namespace list --subscription ".$subs_id;  
     exec($sbus_command, $sbus_output, $sbus_retval);
+    printCommandOutputDebug($sbus_command,$sbus_output);
     $sbus_json_obj=json_decode(join($sbus_output),false);
     //cycle on all service bus (es)
     echo "INFO : found ".count($sbus_json_obj)." servicebus(es)\r\n";
