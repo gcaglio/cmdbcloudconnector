@@ -1,6 +1,7 @@
 <?php
 include "./conf/output.php";
 include "./conf/tags.php";
+include "./utils/utils.php";
 
 // get all projects
 // for each project get vm(s)
@@ -11,19 +12,19 @@ $prjs_retval=null;
 $prjs_command="gcloud projects list --format=json 2>/dev/null";
 
 exec($prjs_command, $prjs_output, $prjs_retval);
+printCommandOutputDebug($prjs_command,$prjs_output);
 
 $prjs_json_obj=json_decode(join($prjs_output),false);
 
 // output file for VM
 $out_vm_filepath=$output_path."/".$out_vm_filename;
 $f_vm_output = fopen($out_vm_filepath, "w") or die("Unable to open file : ".$out_vm_filepath);
-fwrite($f_vm_output,"Code;Description;Id;Name;Zone;MachineType\r\n");
+fwrite($f_vm_output,"Code;Id;Name;Description;Zone;MachineType;Status;IpAddress;Kind\r\n");
 
 //output file for SUBS-VM
 $out_rel_prjs_vm_filepath=$output_path."/".$out_rel_prjs_vm;
 $f_rel_prjs_vm_output = fopen($out_rel_prjs_vm_filepath, "w") or die("Unable to open file : ".$out_rel_prjs_vm_filepath);
 fwrite($f_rel_prjs_vm_output,"hash_ProjectId;hash_VmId\r\n");
-
 
 //output file for BusinessAppLandscape-VM
 //$out_rel_bal_vm_filepath=$output_path."/".$out_rel_busapplandscape_vm;
@@ -45,30 +46,52 @@ for ($s=0; $s<count($prjs_json_obj); $s++){
     $vm_command="gcloud compute instances list --project \"".$prj_id. "\" --format=json --quiet";  
 
     exec($vm_command, $vm_output, $vm_retval);
+    printCommandOutputDebug($vm_command,$vm_output);
+
     $vm_json_obj=json_decode(join($vm_output),false);
     //cycle on all VMs
     echo "INFO : found ".count($vm_json_obj)." VMs\r\n";
     for ($v=0; $v<count($vm_json_obj); $v++){
       #var_dump($vm_json_obj[$v]);
       $vm_id=$vm_json_obj[$v]->{"id"};
-      $hash_vmid=md5(strtolower($vm_id));                 // this will be the CODE 32-byte length
+      
+      $vm_selflink=$vm_json_obj[$v]->{"selfLink"};
+      $hash_vmid=md5(strtolower($vm_selflink));                 // this will be the CODE 32-byte length
+
       $vm_name=$vm_json_obj[$v]->{"name"};
+      $vm_description=$vm_json_obj[$v]->{"description"};
+
       $vm_zone=$vm_json_obj[$v]->{"zone"};		  // format is URL/URI, get the last /
       $vm_zone=substr($vm_zone,strrpos($vm_zone,"/")+1);
+
       $vm_machineType=$vm_json_obj[$v]->{"machineType"};  // format is URL/URI, get the last /
       $vm_machineType=substr($vm_machineType,strrpos($vm_machineType,"/")+1);
 
+      $vm_status=$vm_json_obj[$v]->{"status"};
+      $vm_kind=$vm_json_obj[$v]->{"kind"};
 
       //$vm_resgroup=$vm_json_obj[$v]->{"resourceGroup"};
 
+      $vm_ips="";
+      if ( isset($vm_json_obj[$v]->{"networkInterfaces"}) ){
+        for ( $i=0; $i<count($vm_json_obj[$v]->{"networkInterfaces"}); $i++){
+          $net_if_obj=$vm_json_obj[$v]->{"networkInterfaces"}[$i];
+	  $vm_ips.=$net_if_obj->{"networkIP"};
+
+	  if ($i+1<count($vm_json_obj[$v]->{"networkInterfaces"})){
+	    $vm_ips.=",";
+	  }
+	}
+      }
 
       // write line in VMs file
-      $line=$hash_vmid.";".$vm_name.";".$vm_id.";".$vm_name.";".$vm_zone.";".$vm_machineType."\r\n";
+      $line=$hash_vmid.";".$vm_id.";".$vm_name.";".$vm_description.";".$vm_zone.";".$vm_machineType.";".$vm_status.";".$vm_ips.";".$vm_kind."\r\n";
       fwrite($f_vm_output, $line);
 
       // write line in rel-subs-vm file
       $rel_line=$hash_prjid.";".$hash_vmid."\r\n";
       fwrite($f_rel_prjs_vm_output,$rel_line);
+
 
       // get landscape from tag
       //$landscape="";

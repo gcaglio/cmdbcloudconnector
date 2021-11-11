@@ -8,6 +8,9 @@ echo "INFO : get projects"
 $basedir/bin/get_projects.sh
 echo "INFO : get virtual machines (compute instances)"
 $basedir/bin/get_vm.sh
+echo "INFO : get disks (compute instances)"
+$basedir/bin/get_disks.sh
+
 #echo "INFO : get app service plans"
 #$basedir/bin/get_appsvcplan.sh
 #echo "INFO : get webapps"
