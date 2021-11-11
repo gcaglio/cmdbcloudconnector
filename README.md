@@ -17,6 +17,7 @@ You can then use those CSV extracted files to populate your CMDB, if you have al
 * Azure cosmosdb (minimal support - name, id, location, resourcegroup)
 * Azure iothub (minimal support - name, id, hostname, primary location, seconday location, sku, resourcegroup)
 * Azure service bus namespaces
+* Azure redis cache
 
 # Beta support
 * GCP Projects
