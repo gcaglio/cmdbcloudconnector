@@ -19,7 +19,7 @@ $subs_json_obj=json_decode(join($subs_output),false);
 // output file for webapp
 $out_webapp_filepath=$output_path."/".$out_webapp_filename;
 $f_webapp_output = fopen($out_webapp_filepath, "w") or die("Unable to open file : ".$out_webapp_filepath);
-fwrite($f_webapp_output,"Code;Description;Id;Name;Location;DefaultHostname;EnabledHostnames;HttpsOnly;LastModifiedTimeUtc;PossibleOutboundIpAddresses;ResourceGroup\r\n");
+fwrite($f_webapp_output,"Code;Id;Name;Location;DefaultHostname;EnabledHostnames;HttpsOnly;LastModifiedTimeUtc;PossibleOutboundIpAddresses;ResourceGroup\r\n");
 
 //output file for APPSVCPLAN-webapp
 $out_rel_appsvcplan_webapp_filepath=$output_path."/".$out_rel_appsvcplan_webapp;
@@ -85,7 +85,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
 
       // write line in webappss file
-      $line=$hash_waid.";".$wa_name.";".$wa_id.";".$wa_name.";".$wa_location.";".$wa_defaultHostname.";".$wa_enabledHostnames.";".$wa_httpsOnly.";".$wa_lastModifiedTime.";".$wa_possibleOutboundIps.";".$wa_resgroup."\r\n";
+      $line=$hash_waid.";".$wa_id.";".$wa_name.";".$wa_location.";".$wa_defaultHostname.";".$wa_enabledHostnames.";".$wa_httpsOnly.";".$wa_lastModifiedTime.";".$wa_possibleOutboundIps.";".$wa_resgroup."\r\n";
       fwrite($f_webapp_output, $line);
 
 

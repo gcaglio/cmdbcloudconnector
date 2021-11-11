@@ -19,7 +19,7 @@ $json_obj=json_decode(join($output),false);
 
 $out_subs_filepath=$output_path."/".$out_subs_filename;
 $f_subs_output = fopen($out_subs_filepath, "w") or die("Unable to open file : ".$out_subs_filepath);
-fwrite($f_subs_output,"Code;Description;SubscriptionId;SubscriptionName;State;TenantId;Account\r\n");
+fwrite($f_subs_output,"Code;SubscriptionId;SubscriptionName;State;TenantId;Account\r\n");
 
 for ($s=0; $s<count($json_obj); $s++){
   #var_dump($json_obj[0]);
@@ -30,7 +30,7 @@ for ($s=0; $s<count($json_obj); $s++){
   $tenantId=$json_obj[$s]->{"tenantId"};
   $account=$json_obj[$s]->{"user"}->{"name"};
 
-  $line=$hash_id.";".$name.";".$id.";".$name.";".$state.";".$tenantId.";".$account."\r\n";
+  $line=$hash_id.";".$id.";".$name.";".$state.";".$tenantId.";".$account."\r\n";
   fwrite($f_subs_output,$line);
 }	
 fclose($f_subs_output);

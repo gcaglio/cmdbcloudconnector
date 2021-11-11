@@ -18,7 +18,7 @@ $subs_json_obj=json_decode(join($subs_output),false);
 // output file for storage accounts
 $out_stgaccount_filepath=$output_path."/".$out_stgaccount_filename;
 $f_stgaccount_output = fopen($out_stgaccount_filepath, "w") or die("Unable to open file : ".$out_stgaccount_filepath);
-fwrite($f_stgaccount_output,"Code;Description;Id;Name;Location;PrimaryLocation;SecondaryLocation;CustomDomain;Sku;ResourceGroup\r\n");
+fwrite($f_stgaccount_output,"Code;Id;Name;Location;PrimaryLocation;SecondaryLocation;CustomDomain;Sku;ResourceGroup\r\n");
 
 //output file for BusinessAppLandscape-webapp
 $out_rel_bal_stgaccount_filepath=$output_path."/".$out_rel_busapplandscape_stgaccount;
@@ -79,7 +79,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       $sa_sku=$sa_json_obj[$v]->{"sku"}->{"name"};
 
       // write line in webappss file
-      $line=$hash_said.";".$sa_name.";".$sa_id.";".$sa_name.";".$sa_location.";".$sa_primaryLocation.";".$sa_secondaryLocation.";".$sa_customDomain.";".$sa_sku.";".$sa_resgroup."\r\n";
+      $line=$hash_said.";".$sa_id.";".$sa_name.";".$sa_location.";".$sa_primaryLocation.";".$sa_secondaryLocation.";".$sa_customDomain.";".$sa_sku.";".$sa_resgroup."\r\n";
       fwrite($f_stgaccount_output, $line);
 
 

@@ -18,7 +18,7 @@ $subs_json_obj=json_decode(join($subs_output),false);
 // output file for cosmosdb
 $out_cosmos_filepath=$output_path."/".$out_cosmos_filename;
 $f_cosmos_output = fopen($out_cosmos_filepath, "w") or die("Unable to open file : ".$out_cosmos_filepath);
-fwrite($f_cosmos_output,"Code;Description;Id;Name;Location;ResourceGroup\r\n");
+fwrite($f_cosmos_output,"Code;Id;Name;Location;ResourceGroup\r\n");
 
 //output file for BusinessAppLandscape-cosmosdb
 $out_rel_bal_cosmos_filepath=$output_path."/".$out_rel_busapplandscape_cosmos;
@@ -57,7 +57,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       $cdb_resgroup=$cdb_json_obj[$v]->{"resourceGroup"};
 
       // write line in cosmos file
-      $line=$hash_cdbid.";".$cdb_name.";".$cdb_id.";".$cdb_name.";".$cdb_location.";".$cdb_resgroup."\r\n";
+      $line=$hash_cdbid.";".$cdb_id.";".$cdb_name.";".$cdb_location.";".$cdb_resgroup."\r\n";
       fwrite($f_cosmos_output, $line);
 
       // write line in rel-subs-cosmos file

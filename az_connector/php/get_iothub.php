@@ -18,7 +18,7 @@ $subs_json_obj=json_decode(join($subs_output),false);
 // output file for cosmosdb
 $out_iothub_filepath=$output_path."/".$out_iothub_filename;
 $f_iothub_output = fopen($out_iothub_filepath, "w") or die("Unable to open file : ".$out_iothub_filepath);
-fwrite($f_iothub_output,"Code;Description;Id;Name;PrimaryLocation;SecondaryLocation;Hostname;SkuTier;SkuName;SkuCapacity;ResourceGroup\r\n");
+fwrite($f_iothub_output,"Code;Id;Name;PrimaryLocation;SecondaryLocation;Hostname;SkuTier;SkuName;SkuCapacity;ResourceGroup\r\n");
 
 //output file for BusinessAppLandscape-iothub
 $out_rel_bal_iothub_filepath=$output_path."/".$out_rel_busapplandscape_iothub;
@@ -71,8 +71,8 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       $sku_name=$ioth_json_obj[$v]->{"sku"}->{"name"};
       $sku_capacity=$ioth_json_obj[$v]->{"sku"}->{"capacity"};
 
-      // write line in cosmos file
-      $line=$hash_iothid.";".$ioth_name.";".$ioth_id.";".$ioth_name.";".$ioth_location_p.";".$ioth_location_s.";".$ioth_hostname.";".$sku_tier.";".$sku_name.";".$sku_capacity.";".$ioth_resgroup."\r\n";
+      // write line in iothub file
+      $line=$hash_iothid.";".$ioth_id.";".$ioth_name.";".$ioth_location_p.";".$ioth_location_s.";".$ioth_hostname.";".$sku_tier.";".$sku_name.";".$sku_capacity.";".$ioth_resgroup."\r\n";
       fwrite($f_iothub_output, $line);
 
       // write line in rel-subs-iothub file

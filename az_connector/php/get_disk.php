@@ -18,7 +18,7 @@ $subs_json_obj=json_decode(join($subs_output),false);
 // output file for Disks
 $out_disk_filepath=$output_path."/".$out_disks_filename;
 $f_disk_output = fopen($out_disk_filepath, "w") or die("Unable to open file : ".$out_disk_filepath);
-fwrite($f_disk_output,"Code;Description;Id;Name;Location;ManagedBy;EncryptionType;DiskState;DiskSizeGb;ResourceGroup\r\n");
+fwrite($f_disk_output,"Code;Id;Name;Location;ManagedBy;EncryptionType;DiskState;DiskSizeGb;ResourceGroup\r\n");
 
 //output file for Disk-VM
 $out_rel_disk_vm_filepath=$output_path."/".$out_rel_disks_vm;
@@ -65,14 +65,9 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       $hash_managedBy=md5(strtolower($disk_managedBy));
       $disk_sizeGB=$disk_json_obj[$v]->{"diskSizeGb"};
 
-      //$vm_avset="";
-      //if ( isset($vm_json_obj[$v]->{"availabilitySet"}) ){
-      //  $vm_avset=$vm_json_obj[$v]->{"availabilitySet"}->{"id"};
-      //  $vm_avset=substr($vm_avset,strpos($vm_avset,"/availabilitySet")+17);
-      //}
       $disk_resgroup=$disk_json_obj[$v]->{"resourceGroup"};
 
-      $line=$hash_diskid.";".$disk_name.";".$disk_id.";".$disk_name.";".$disk_location.";".$disk_managedBy.";".$disk_enctype.";".$disk_state.";".$disk_sizeGB.";".$disk_resgroup."\r\n";
+      $line=$hash_diskid.";".$disk_id.";".$disk_name.";".$disk_location.";".$disk_managedBy.";".$disk_enctype.";".$disk_state.";".$disk_sizeGB.";".$disk_resgroup."\r\n";
       fwrite($f_disk_output, $line);
 
 

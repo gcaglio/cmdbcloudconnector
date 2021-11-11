@@ -18,7 +18,7 @@ $subs_json_obj=json_decode(join($subs_output),false);
 // output file for cosmosdb
 $out_svcbus_filepath=$output_path."/".$out_svcbus_filename;
 $f_svcbus_output = fopen($out_svcbus_filepath, "w") or die("Unable to open file : ".$out_svcbus_filepath);
-fwrite($f_svcbus_output,"Code;Description;Id;Name;Endpoint;Location;SkuTier;SkuName;SkuCapacity;ZoneRedundant;ResourceGroup\r\n");
+fwrite($f_svcbus_output,"Code;Id;Name;Endpoint;Location;SkuTier;SkuName;SkuCapacity;ZoneRedundant;ResourceGroup\r\n");
 
 //output file for BusinessAppLandscape-svcbus
 $out_rel_bal_svcbus_filepath=$output_path."/".$out_rel_busapplandscape_svcbus;
@@ -66,7 +66,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       $sku_capacity=$sbus_json_obj[$v]->{"sku"}->{"capacity"};
 
       // write line in servicebus
-      $line=$hash_sbusid.";".$sbus_name.";".$sbus_id.";".$sbus_name.";".$sbus_endpoint.";".$sbus_location.";".$sku_tier.";".$sku_name.";".$sku_capacity.";".$sbus_zoneredundant.";".$sbus_resgroup."\r\n";
+      $line=$hash_sbusid.";".$sbus_id.";".$sbus_name.";".$sbus_endpoint.";".$sbus_location.";".$sku_tier.";".$sku_name.";".$sku_capacity.";".$sbus_zoneredundant.";".$sbus_resgroup."\r\n";
       fwrite($f_svcbus_output, $line);
 
       // write line in rel-subs-svcbus file

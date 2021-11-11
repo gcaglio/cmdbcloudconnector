@@ -19,7 +19,7 @@ $subs_json_obj=json_decode(join($subs_output),false);
 // output file for sql servers
 $out_sqlsrv_filepath=$output_path."/".$out_sqlsrv_filename;
 $f_sqlsrv_output = fopen($out_sqlsrv_filepath, "w") or die("Unable to open file : ".$out_sqlsrv_filepath);
-fwrite($f_sqlsrv_output,"Code;Description;Id;Name;Location;FQDN;publicNetworkAccess;MinimalTlsVersion;Version;Type;ResourceGroup\r\n");
+fwrite($f_sqlsrv_output,"Code;Id;Name;Location;FQDN;publicNetworkAccess;MinimalTlsVersion;Version;Type;ResourceGroup\r\n");
 
 //output file for BusinessAppLandscape-servers
 $out_rel_bal_sqlsrv_filepath=$output_path."/".$out_rel_busapplandscape_sqlsrv;
@@ -30,7 +30,7 @@ fwrite($f_rel_bal_sqlsrv_output,"code_baLandscape;hash_SqlSrvId\r\n");
 // output file for sql db
 $out_sqldb_filepath=$output_path."/".$out_sqlsrvdb_filename;
 $f_sqldb_output = fopen($out_sqldb_filepath, "w") or die("Unable to open file : ".$out_sqldb_filepath);
-fwrite($f_sqldb_output,"Code;Description;Id;Name;Location;Collation;CatalogCollation;CreationDate;SkuName;SkuTier;BckStorageRedundancy;DefaultSecondaryLocation;Edition;ElasticPoolName;FailoverGroupID;HighAvailabilityReplicaCount;Kind;MaxLogSizeBytes;MaxSizeBytes;MinCapacity;ZoneRedundancy;ResourceGroup;Type\r\n");
+fwrite($f_sqldb_output,"Code;Id;Name;Location;Collation;CatalogCollation;CreationDate;SkuName;SkuTier;BckStorageRedundancy;DefaultSecondaryLocation;Edition;ElasticPoolName;FailoverGroupID;HighAvailabilityReplicaCount;Kind;MaxLogSizeBytes;MaxSizeBytes;MinCapacity;ZoneRedundancy;ResourceGroup;Type\r\n");
 
 //output file for BusinessAppLandscape-db
 $out_rel_bal_sqldb_filepath=$output_path."/".$out_rel_busapplandscape_sqldb;

@@ -19,7 +19,7 @@ $subs_json_obj=json_decode(join($subs_output),false);
 // output file for mysql servers
 $out_mysqlsrv_filepath=$output_path."/".$out_mysqlsrv_filename;
 $f_mysqlsrv_output = fopen($out_mysqlsrv_filepath, "w") or die("Unable to open file : ".$out_mysqlsrv_filepath);
-fwrite($f_mysqlsrv_output,"Code;Description;Id;Name;Location;FQDN;InfrastructureEncryption;publicNetworkAccess;SkuCapacity;SkuName;SkuTier;SslEnforcement;MinimalTlsVersion;BackupRetentionDays;GeoRedundantBackup;StorageAutogrow;StorageMb;Version;Type;ResourceGroup\r\n");
+fwrite($f_mysqlsrv_output,"Code;Id;Name;Location;FQDN;InfrastructureEncryption;publicNetworkAccess;SkuCapacity;SkuName;SkuTier;SslEnforcement;MinimalTlsVersion;BackupRetentionDays;GeoRedundantBackup;StorageAutogrow;StorageMb;Version;Type;ResourceGroup\r\n");
 
 //output file for BusinessAppLandscape-servers
 $out_rel_bal_mysqlsrv_filepath=$output_path."/".$out_rel_busapplandscape_mysqlsrv;
@@ -30,7 +30,7 @@ fwrite($f_rel_bal_mysqlsrv_output,"code_baLandscape;hash_MysqlSrvId\r\n");
 // output file for mysql db
 $out_mysqldb_filepath=$output_path."/".$out_mysqldb_filename;
 $f_mysqldb_output = fopen($out_mysqldb_filepath, "w") or die("Unable to open file : ".$out_mysqldb_filepath);
-fwrite($f_mysqldb_output,"Code;Description;Id;Name;Charset;Collation\r\n");
+fwrite($f_mysqldb_output,"Code;Id;Name;Charset;Collation\r\n");
 
 //output file for BusinessAppLandscape-db
 $out_rel_bal_mysqldb_filepath=$output_path."/".$out_rel_busapplandscape_mysqldb;
@@ -99,9 +99,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       $msrv_sp_size=$mdbsrv_json_obj[$v]->{"storageProfile"}->{"storageMb"};
 
       // write line in webappss file
-      // "Code;Description;Id;Name;Location;FQDN;InfrastructureEncryption;publicNetworkAccess;SkuCapacity;SkuName;SkuTier;SslEnforcement;MinimalTlsVersion;BackupRetentionDays;GeoRedundantBackup;StorageAutogrow;StorageMb;Version;Type;ResourceGroup\r\n"
-      
-      $line=$hash_msrvid.";".$msrv_name.";".$msrv_id.";".$msrv_name.";".$msrv_location.";".$msrv_fqdn.";".$msrv_infrastructureencryption.";".$msrv_pubnetaccess.";".$msrv_sku_cap.";".$msrv_sku_name.";".$msrv_sku_tier.";".$msrv_sslenforcement.";".$msrv_minimaltlsversion.";".$msrv_sp_backupdays.";".$msrv_sp_geobackup.";".$msrv_sp_autogrow.";".$msrv_sp_size.";".$msrv_version.";".$msrv_type.";".$msrv_resgroup."\r\n";
+      $line=$hash_msrvid.";".$msrv_id.";".$msrv_name.";".$msrv_location.";".$msrv_fqdn.";".$msrv_infrastructureencryption.";".$msrv_pubnetaccess.";".$msrv_sku_cap.";".$msrv_sku_name.";".$msrv_sku_tier.";".$msrv_sslenforcement.";".$msrv_minimaltlsversion.";".$msrv_sp_backupdays.";".$msrv_sp_geobackup.";".$msrv_sp_autogrow.";".$msrv_sp_size.";".$msrv_version.";".$msrv_type.";".$msrv_resgroup."\r\n";
       fwrite($f_mysqlsrv_output, $line);
 
 
@@ -149,7 +147,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
         $mdb_charset=$mdbdb_json_obj[$x]->{"charset"};
 	$mdb_collation=$mdbdb_json_obj[$x]->{"collation"};
 
-	$line_db=$hash_mdbid.";".$mdb_name.";".$mdb_id.";".$mdb_name.";".$mdb_charset.";".$mdb_collation."\r\n";
+	$line_db=$hash_mdbid.";".$mdb_id.";".$mdb_name.";".$mdb_charset.";".$mdb_collation."\r\n";
 	fwrite($f_mysqldb_output, $line_db);
 
 

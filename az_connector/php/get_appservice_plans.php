@@ -18,7 +18,7 @@ $subs_json_obj=json_decode(join($subs_output),false);
 // output file for appsvcplans
 $out_appsvcplan_filepath=$output_path."/".$out_appsvcplan_filename;
 $f_appsvcplan_output = fopen($out_appsvcplan_filepath, "w") or die("Unable to open file : ".$out_appsvcplan_filepath);
-fwrite($f_appsvcplan_output,"Code;Description;Id;Name;Location;Sku;Kind;ResourceGroup\r\n");
+fwrite($f_appsvcplan_output,"Code;Id;Name;Location;Sku;Kind;ResourceGroup\r\n");
 
 //output file for SUBS-APPSVCPLAN
 $out_rel_subs_appsvcplan_filepath=$output_path."/".$out_rel_subs_appsvcplan;
@@ -66,7 +66,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       $plan_kind=$plan_json_obj[$v]->{"kind"};
 
       // write line in AppSvcPlans file
-      $line=$hash_planid.";".$plan_name.";".$plan_id.";".$plan_name.";".$plan_location.";".$plan_sku.";".$plan_kind.";".$plan_resgroup."\r\n";
+      $line=$hash_planid.";".$plan_id.";".$plan_name.";".$plan_location.";".$plan_sku.";".$plan_kind.";".$plan_resgroup."\r\n";
       fwrite($f_appsvcplan_output, $line);
 
       // write line in rel-subs-appsvcplan file

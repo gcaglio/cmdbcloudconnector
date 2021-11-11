@@ -19,7 +19,7 @@ $subs_json_obj=json_decode(join($subs_output),false);
 // output file for VM
 $out_vm_filepath=$output_path."/".$out_vm_filename;
 $f_vm_output = fopen($out_vm_filepath, "w") or die("Unable to open file : ".$out_vm_filepath);
-fwrite($f_vm_output,"Code;Description;Id;Name;Location;StandardFamily;AvailabilitySet;DiagnosticsProfile;ResourceGroup;Type;Zones;ImageExactVersion;ImageOffer;ImagePublisher;ImageSku;ImageVersion;ImageId\r\n");
+fwrite($f_vm_output,"Code;Id;Name;Location;StandardFamily;AvailabilitySet;DiagnosticsProfile;ResourceGroup;Type;Zones;ImageExactVersion;ImageOffer;ImagePublisher;ImageSku;ImageVersion;ImageId\r\n");
 
 //output file for SUBS-VM
 $out_rel_subs_vm_filepath=$output_path."/".$out_rel_subs_vm;
@@ -110,7 +110,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
 
       // write line in VMs file
-      $line=$hash_vmid.";".$vm_name.";".$vm_id.";".$vm_name.";".$vm_location.";".$vm_stdfamily.";".$vm_avset.";".$vm_diagprofile.";".$vm_resgroup.";".$vm_type.";".$vm_zones.";".$vm_imageexactversion.";".$vm_imageoffer.";".$vm_imagepublisher.";".$vm_imagesku.";".$vm_imageversion.";".$vm_imageid."\r\n";
+      $line=$hash_vmid.";".$vm_id.";".$vm_name.";".$vm_location.";".$vm_stdfamily.";".$vm_avset.";".$vm_diagprofile.";".$vm_resgroup.";".$vm_type.";".$vm_zones.";".$vm_imageexactversion.";".$vm_imageoffer.";".$vm_imagepublisher.";".$vm_imagesku.";".$vm_imageversion.";".$vm_imageid."\r\n";
       fwrite($f_vm_output, $line);
 
       // write line in rel-subs-vm file

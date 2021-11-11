@@ -20,7 +20,7 @@ $subs_json_obj=json_decode(join($subs_output),false);
 // output file for vnet
 $out_vnet_filepath=$output_path."/".$out_vnet_filename;
 $f_vnet_output = fopen($out_vnet_filepath, "w") or die("Unable to open file : ".$out_vnet_filepath);
-fwrite($f_vnet_output,"Code;Description;Id;Name;Location;AddressPrefixes;ResourceGroup\r\n");
+fwrite($f_vnet_output,"Code;Id;Name;Location;AddressPrefixes;ResourceGroup\r\n");
 
 //output file for BusinessAppLandscape-Vnet
 $out_rel_bal_vnet_filepath=$output_path."/".$out_rel_busapplandscape_vnet;
@@ -31,7 +31,7 @@ fwrite($f_rel_bal_vnet_output,"code_baLandscape;hash_VnetId\r\n");
 //output file for private ips
 $out_privip_filepath=$output_path."/".$out_privip_filename;
 $f_privip_output = fopen($out_privip_filepath, "w") or die("Unable to open file : ".$out_privip_filepath);
-fwrite($f_privip_output,"Code;Description;Id;Name;PrivateIp;SubnetName;VnetName;ResourceGroup\r\n");
+fwrite($f_privip_output,"Code;Id;Name;PrivateIp;SubnetName;VnetName;ResourceGroup\r\n");
 
 $out_rel_privip_vnet_filepath=$output_path."/".$out_rel_privip_vnet;
 $f_rel_privip_vnet_output = fopen($out_rel_privip_vnet_filepath, "w") or die("Unable to open file : ".$out_rel_privip_vnet_filepath);
@@ -78,7 +78,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
       } 
 
       // write line in vnet file
-      $line=$hash_vnetid.";".$vnet_name.";".$vnet_id.";".$vnet_name.";".$vnet_location.";".$addrprfx.";".$vnet_resgroup."\r\n";
+      $line=$hash_vnetid.";".$vnet_id.";".$vnet_name.";".$vnet_location.";".$addrprfx.";".$vnet_resgroup."\r\n";
       fwrite($f_vnet_output, $line);
 
       // write line in rel-subs-vm file
@@ -132,7 +132,7 @@ for ($s=0; $s<count($subs_json_obj); $s++){
 
           $ipc_resgroup=$subnet_obj->{"ipConfigurations"}[$ic]->{"resourceGroup"};
      
-          $line_ips=$hash_ipcid.";".$ipc_name.";".$ipc_id.";".$ipc_name.";".$ipc_privIps.";".$subnet_name.";".$vnet_name.";".$ipc_resgroup.";\r\n";
+          $line_ips=$hash_ipcid.";".$ipc_id.";".$ipc_name.";".$ipc_privIps.";".$subnet_name.";".$vnet_name.";".$ipc_resgroup.";\r\n";
           fwrite($f_privip_output,$line_ips);
 
           $rel_line_ips_vnet=$hash_ipcid.";".$hash_vnetid.";\r\n";
