@@ -5,6 +5,9 @@ $output_path="/opt/cmdbcloudconnector/oci_connector/output";
 # YOU HAVE TO modify this path to the absolute path of the folder for OCI CLI
 $oci_path="/opt/oracle-cli/bin";
 
+// true if you want every command and output to be printed for debug
+$debug_cmd_output=true;
+
 // output file anag
 $out_cmpts_filename="compartments.csv"
 #$out_vm_filename="vm.csv";

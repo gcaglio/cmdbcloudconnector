@@ -1,5 +1,6 @@
 <?php
 include "./conf/output.php";
+include "./utils/utils.php";
 
 # get OCI compartments
 
@@ -7,6 +8,7 @@ $output=null;
 $retval=null;
 $command=$oci_path."/oci iam compartment list --all --compartment-id-in-subtree true --access-level ACCESSIBLE --include-root --raw-output 2>/dev/null";
 exec($command, $output, $retval);
+printCommandOutputDebug($command,$output);
 
 $json_obj=json_decode(join($output),false);
 
