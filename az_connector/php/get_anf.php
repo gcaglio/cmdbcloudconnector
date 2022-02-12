@@ -25,7 +25,8 @@ fwrite($f_anfaccount_output,"Code;Id;Name;Location;ResourceGroup;Type\r\n");
 // output file for anfvolumes
 $out_anfvol_filepath=$output_path."/".$out_anfvol_filename;
 $f_anfvol_output = fopen($out_anfvol_filepath, "w") or die("Unable to open file : ".$out_anfvol_filepath);
-fwrite($f_anfvol_output,"Code;Id;Name;Size\r\n");
+fwrite($f_anfvol_output,"Code;Id;Name;BaremetalTenantId;Location;SubnetId;Size;ServiceLevel;Tput;Type\r\n");
+
 
 //output file for anfpools
 $out_anfpool_filepath=$output_path."/".$out_anfpool_filename;
