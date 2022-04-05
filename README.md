@@ -20,10 +20,13 @@ You can then use those CSV extracted files to populate your CMDB, if you have al
 * Azure redis cache
 * Azure NetappFiles (ANF)
 
-# Beta support
-* GCP Projects
-* GCP virtual machines (compute instances) - minimal support : barely the list
 
+* GCP Projects
+* GCP compute instances
+* GCP gke clusters
+
+# Beta support
+* GCP compute instances disks
 * Oracle Cloud ( OCI ) - Compartment 
 
 # business applications

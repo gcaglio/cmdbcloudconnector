@@ -9,6 +9,7 @@ $prjs_output=null;
 $prjs_retval=null;
 $prjs_command="gcloud projects list --format=json 2>/dev/null";
 
+	
 exec($prjs_command, $prjs_output, $prjs_retval);
 printCommandOutputDebug($prjs_command,$prjs_output);
 
